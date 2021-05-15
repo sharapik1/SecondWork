@@ -11,7 +11,7 @@
   </tr>
   <tr>
     <td style="text-align: right; border: none; height: 20em;">
-      Разработал: Игимбаев Тимур<br/>
+      Разработала: Шарапова Екатерина<br/>
       Группа: И-21<br/>
       Проверил: Колесников Е.И.       
     </td>
@@ -30,7 +30,7 @@
 2. Разработать WPF-приложение.
 
 # Вывод 
-1. Я разработал класс Book:
+1. Я разработала класс Book:
 ```
 public class Book
 {
@@ -42,21 +42,21 @@ public int Stranitsi { get; set; }
 public string Janr { get; set; }
 }
 ```
-2. Создал интерфейс IDataProvider:
+2. Создала интерфейс IDataProvider:
 ```
 interface IDataProvider
 {
 IEnumerable<Book> GetBooks();
 }
 ```
-3. Далее создал класс Global:
+3. Далее создала класс Global:
 ```
 class Globals
 {
 public static IDataProvider dataProvider;
 }
 ```
-4. Присвоил глобальной переменной dataProvider экземпляр класса LocalDataProvider и сохранил список книгей в свойстве BookList:
+4. Присвоила глобальной переменной dataProvider экземпляр класса LocalDataProvider и сохранил список книгей в свойстве BookList:
 ```
 public IEnumerable<Book> BookList { get; set; }
 
@@ -73,7 +73,7 @@ private void ExitButton_Click(object sender, RoutedEventArgs e)
 Application.Current.Shutdown();
 }
 ```
-5. И привязал данные:
+5. И привязала данные:
 ```XML
 <DataGrid
 Grid.Row="1"
@@ -106,4 +106,4 @@ Binding="{Binding Janr}"/>
 </Window>
 ```
 # Результат работы:
-![](./resultat.JPG)
+![](./rezultat.JPG)

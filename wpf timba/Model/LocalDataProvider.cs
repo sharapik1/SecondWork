@@ -12,9 +12,9 @@ namespace wpf_timba.Model
         {
             return new Book[]
             {
-                new Book{NameAvtor = "Рей Дуглас Бредбери", Izdatelstvo = "Баллантай книги", NameBook = "451 градус по Фаренгейту", Year = 1953, Stranitsi = 400, Janr = "Драма" },
-                new Book { NameAvtor = "Джордж Рейн Толкин", Izdatelstvo = " George Allen", NameBook = "Властелин колец", Year = 1954, Stranitsi = 300, Janr = "Драма"},
-                new Book {NameAvtor = "Джейн Остин Джеймс", Izdatelstvo = "Thomas Egerton", NameBook = "Гордость и предубеждение", Year = 1813, Stranitsi = 255, Janr = "Психология"}
+                new Book{NameAvtor = "Николай Семенович Лесков", Izdatelstvo = "Николай Семенович Лесков", NameBook = "Левша", Year = 1881, Stranitsi = 279, Janr = "Художественный вымысел" },
+                new Book { NameAvtor = ".Шарлотта Бронте Каррер", Izdatelstvo = " Смит Элдер и Ко", NameBook = "Джейн Эйр", Year = 1846, Stranitsi = 536, Janr = "Драма"},
+                new Book {NameAvtor = " Шарлотта Бронте Каррер", Izdatelstvo = "Смит Элдер и Ко", NameBook = "Шерли", Year = 1849, Stranitsi = 498, Janr = "Психология"}
                
             };
         }
