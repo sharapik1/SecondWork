@@ -26,7 +26,7 @@
 
 # Цели и задачи:
 
-1. Ознакомиться с информацией из [лекции]https://github.com/kolei/OAP/blob/master/articles/wpf_template.md)
+1. Ознакомиться с информацией из [лекции](https://github.com/kolei/OAP/blob/master/articles/wpf_template.md)
 2. Разработать WPF-приложение.
 
 # Вывод 
