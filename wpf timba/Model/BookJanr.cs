@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace wpf_timba.Model
 {
-    interface IDataProvider
+    public class BookJanr
     {
-        IEnumerable<Book> GetBooks();
-        IEnumerable<BookJanr> GetBookJanrs();
+        public string Title { get; set; }
     }
 }

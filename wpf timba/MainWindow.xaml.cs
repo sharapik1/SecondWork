@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,9 +19,28 @@ namespace wpf_timba
 {
 
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public IEnumerable<Book> BookList { get; set; }
+        public string SelectedJanr = "";
+
+        private IEnumerable<Book> _BookList = null;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public IEnumerable<Book> BookList 
+        {
+            get
+            {
+                return _BookList
+                    .Where(c => (SelectedJanr == "Все жанры" || c.Janr == SelectedJanr));
+            }
+            set
+            {
+                _BookList = value;
+            }
+        }
+
+
 
         public MainWindow()
         {
@@ -28,11 +48,26 @@ namespace wpf_timba
             DataContext = this;
             Globals.dataProvider = new LocalDataProvider();
             BookList = Globals.dataProvider.GetBooks();
+            BookJanrList = Globals.dataProvider.GetBookJanrs().ToList();
+            BookJanrList.Insert(0, new BookJanr { Title = "Все жанры" });
+            
 
         }
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+        public List<BookJanr> BookJanrList { get; set; }
+
+        private void Invalidate()
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("BookList"));
+        }
+        private void BreedFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedJanr = (BreedFilterComboBox.SelectedItem as BookJanr).Title;
+            Invalidate();
         }
     }
 }

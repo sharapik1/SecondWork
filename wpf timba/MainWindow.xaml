@@ -35,6 +35,25 @@
           Orientation="Horizontal"
             Grid.Column="1"
             MinHeight="50">
+            <Label 
+    Content="Жанр:"
+    VerticalAlignment="Center"/>
+
+            <ComboBox
+    Name="BreedFilterComboBox"
+    SelectionChanged="BreedFilterComboBox_SelectionChanged"
+    VerticalAlignment="Center"
+    MinWidth="100"
+    SelectedIndex="0"
+    ItemsSource="{Binding BookJanrList}">
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label 
+                Content="{Binding Title}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </WrapPanel>
 
         <DataGrid

@@ -11,7 +11,7 @@
   </tr>
   <tr>
     <td style="text-align: right; border: none; height: 20em;">
-      Разработала: Шарапова Екатерина<br/>
+      Разработал: Игимбаев Тимур<br/>
       Группа: И-21<br/>
       Проверил: Колесников Е.И.       
     </td>
@@ -26,84 +26,90 @@
 
 # Цели и задачи:
 
-1. Ознакомиться с информацией из [лекции](https://github.com/kolei/OAP/blob/master/articles/wpf_template.md)
-2. Разработать WPF-приложение.
+1. Ознакомиться с информацией из [лекции](https://github.com/kolei/OAP/blob/master/articles/wpf_filtering.md)
+2. Создать фильтрацию.
 
 # Вывод 
-1. Я разработала класс Book:
+1. Реализовал геттер и сеттер для списка книг:
 ```
-public class Book
-{
-public string NameAvtor { get; set; }
-public string Izdatelstvo { get; set; }
-public string NameBook { get; set; }
-public int Year { get; set; }
-public int Stranitsi { get; set; }
-public string Janr { get; set; }
-}
-```
-2. Создала интерфейс IDataProvider:
-```
-interface IDataProvider
-{
-IEnumerable<Book> GetBooks();
-}
-```
-3. Далее создала класс Global:
-```
-class Globals
-{
-public static IDataProvider dataProvider;
-}
-```
-4. Присвоила глобальной переменной dataProvider экземпляр класса LocalDataProvider и сохранил список книгей в свойстве BookList:
-```
-public IEnumerable<Book> BookList { get; set; }
+public string SelectedJanr = "";
 
-public MainWindow()
-{
-InitializeComponent();
-DataContext = this;
-Globals.dataProvider = new LocalDataProvider();
-BookList = Globals.dataProvider.GetBooks();
+private IEnumerable<Book> _BookList = null;
 
-}
-private void ExitButton_Click(object sender, RoutedEventArgs e)
+public event PropertyChangedEventHandler PropertyChanged;
+
+public IEnumerable<Book> BookList 
 {
-Application.Current.Shutdown();
+get
+{
+return _BookList
+.Where(c => (SelectedJanr == "Все жанры" || c.Janr == SelectedJanr));
+}
+set
+{
+_BookList = value;
+}
 }
 ```
-5. И привязала данные:
+2. Создал класс для элемента справочника:
+```
+{
+public class BookJanr
+{
+public string Title { get; set; }
+}
+}
+```
+3. Добавил в разметку выпадающий список для выбора жанра:
 ```XML
-<DataGrid
-Grid.Row="1"
+<WrapPanel
+Orientation="Horizontal"
 Grid.Column="1"
-CanUserAddRows="False"
-AutoGenerateColumns="False"
-ItemsSource="{Binding BookList}">
-<DataGrid.Columns>
-<DataGridTextColumn
-Header="Автор"
-Binding="{Binding NameAvtor}"/>
-<DataGridTextColumn
-Header="Издательство"
-Binding="{Binding Izdatelstvo}"/>
-<DataGridTextColumn
-Header="Книга"
-Binding="{Binding NameBook}"/>
-<DataGridTextColumn
-Header="Год"
-Binding="{Binding Year}"/>
-<DataGridTextColumn
-Header="Страницы"
-Binding="{Binding Stranitsi}"/>
-<DataGridTextColumn
-Header="Жанр"
-Binding="{Binding Janr}"/>
-</DataGrid.Columns>
-</DataGrid>
-</Grid>
-</Window>
+MinHeight="50">
+<Label 
+Content="Жанр:"
+VerticalAlignment="Center"/>
+
+<ComboBox
+Name="BreedFilterComboBox"
+SelectionChanged="BreedFilterComboBox_SelectionChanged"
+VerticalAlignment="Center"
+MinWidth="100"
+SelectedIndex="0"
+ItemsSource="{Binding BookJanrList}">
+
+<ComboBox.ItemTemplate>
+<DataTemplate>
+<Label 
+Content="{Binding Title}"/>
+</DataTemplate>
+</ComboBox.ItemTemplate>
+</ComboBox>
+</WrapPanel>
+```
+4. Добавил интерфейс окну:
+```
+public partial class MainWindow : Window, INotifyPropertyChanged
+```
+5. Реализовал интерфейс:
+```
+public event PropertyChangedEventHandler PropertyChanged;
+```
+6. Написал метод, который будет сообщать визуальной части что что-то изменилось
+```
+private void Invalidate()
+{
+if (PropertyChanged != null)
+PropertyChanged(this, new PropertyChangedEventArgs("BookList"));
+}
+```
+7. В обработчик события выбора жанра добавил вызов метода:
+```
+private void BreedFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+SelectedBreed = (BreedFilterComboBox.SelectedItem as BookJanr).Title;
+Invalidate();
+}
 ```
 # Результат работы:
-![](./rezultat.JPG)
+![](./secresult.JPG)
