@@ -11,7 +11,7 @@
   </tr>
   <tr>
     <td style="text-align: right; border: none; height: 20em;">
-      Разработал: Игимбаев Тимур<br/>
+      Разработала: Шарапова Екатерина<br/>
       Группа: И-21<br/>
       Проверил: Колесников Е.И.       
     </td>
@@ -30,7 +30,7 @@
 2. Создать фильтрацию.
 
 # Вывод 
-1. Реализовал геттер и сеттер для списка книг:
+1. Реализовала геттер и сеттер для списка книг:
 ```
 public string SelectedJanr = "";
 
@@ -51,7 +51,7 @@ _BookList = value;
 }
 }
 ```
-2. Создал класс для элемента справочника:
+2. Создала класс для элемента справочника:
 ```
 {
 public class BookJanr
@@ -60,7 +60,7 @@ public string Title { get; set; }
 }
 }
 ```
-3. Добавил в разметку выпадающий список для выбора жанра:
+3. Добавила в разметку выпадающий список для выбора жанра:
 ```XML
 <WrapPanel
 Orientation="Horizontal"
@@ -87,15 +87,15 @@ Content="{Binding Title}"/>
 </ComboBox>
 </WrapPanel>
 ```
-4. Добавил интерфейс окну:
+4. Добавила интерфейс окну:
 ```
 public partial class MainWindow : Window, INotifyPropertyChanged
 ```
-5. Реализовал интерфейс:
+5. Реализовала интерфейс:
 ```
 public event PropertyChangedEventHandler PropertyChanged;
 ```
-6. Написал метод, который будет сообщать визуальной части что что-то изменилось
+6. Написала метод, который будет сообщать визуальной части что что-то изменилось
 ```
 private void Invalidate()
 {
@@ -103,7 +103,7 @@ if (PropertyChanged != null)
 PropertyChanged(this, new PropertyChangedEventArgs("BookList"));
 }
 ```
-7. В обработчик события выбора жанра добавил вызов метода:
+7. В обработчик события выбора жанра добавила вызов метода:
 ```
 private void BreedFilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 {
@@ -112,4 +112,4 @@ Invalidate();
 }
 ```
 # Результат работы:
-![](./secresult.JPG)
+![](./secondresult.JPG)
