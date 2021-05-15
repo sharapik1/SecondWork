@@ -12,25 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using wpf_timba.Model;
 
 namespace wpf_timba
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
+
+
     public partial class MainWindow : Window
     {
+        public IEnumerable<Book> BookList { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
+            Globals.dataProvider = new LocalDataProvider();
+            BookList = Globals.dataProvider.GetBooks();
+
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            string text = textBox1.Text;
-            if (text != "")
-            {
-                MessageBox.Show(text);
-            }
+            Application.Current.Shutdown();
         }
     }
 }
+

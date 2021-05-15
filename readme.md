@@ -6,12 +6,12 @@
   </tr>
   <tr>
     <td style="text-align: center; border: none; height: 15em;"><h2>Отчет по лабораторной работe<h2><br>
-    По теме: "Создание WPF-приложения. Знакомство с компоновкой"
+    По теме: "Каркас приложения. Модель данных. Привязка данных."
     </td>
   </tr>
   <tr>
     <td style="text-align: right; border: none; height: 20em;">
-      Разработали: Игимбаев Тимур и Шарапова Екатерина<br/>
+      Разработал: Игимбаев Тимур<br/>
       Группа: И-21<br/>
       Проверил: Колесников Е.И.       
     </td>
@@ -26,150 +26,84 @@
 
 # Цели и задачи:
 
-1. Ознакомиться с информацией из [лекции](https://github.com/kolei/OAP/blob/master/articles/t8_win_app.md)
-2. Создать приложение WPF .NET Framework
-3. Исследовать контейнеры
-
-Grid: создать сетку с разными типами выравнивания (auto, фискированное, динамическое)
-StackPanel: создать панели с разной ориентацией и выравниванием вложенных эелементов
-WrapPanel
+1. Ознакомиться с информацией из [лекции]https://github.com/kolei/OAP/blob/master/articles/wpf_template.md)
+2. Разработать WPF-приложение.
 
 # Вывод 
+1. Я разработал класс Book:
+```
+public class Book
+    {
+        public string NameAvtor { get; set; }
+        public string Izdatelstvo { get; set; }
+        public string NameBook { get; set; }
+        public int Year { get; set; }
+        public int Stranitsi { get; set; }
+        public string Janr { get; set; }
+    }
+```
+2. Создал интерфейс IDataProvider:
+```
+interface IDataProvider
+    {
+        IEnumerable<Book> GetBooks();
+    }
+```
+3. Далее создал класс Global:
+```
+class Globals
+    {
+        public static IDataProvider dataProvider;
+    }
+```
+4. Присвоил глобальной переменной dataProvider экземпляр класса LocalDataProvider и сохранил список книгей в свойстве BookList:
+```
+  public IEnumerable<Book> BookList { get; set; }
 
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = this;
+            Globals.dataProvider = new LocalDataProvider();
+            BookList = Globals.dataProvider.GetBooks();
 
+        }
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+```
+5. И привязал данные:
 ```XML
-<Window x:Class="wpf_timba.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:wpf_timba"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid x:Name="grid1">
-        <TextBox
-            x:Name="textBox1"
-            Width="150"
-            Height="30"
-            VerticalAlignment="Top"
-            Margin="20" Text="Привет&#xD;&#xA;" />
-        <Button
-            x:Name="button1"
-            Width="100"
-            Height="30"
-            Content="Кнопка"
-            Click="Button_Click" />
+<DataGrid
+    Grid.Row="1"
+    Grid.Column="1"
+    CanUserAddRows="False"
+    AutoGenerateColumns="False"
+    ItemsSource="{Binding BookList}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+            Header="Автор"
+            Binding="{Binding NameAvtor}"/>
+                <DataGridTextColumn
+            Header="Издательство"
+            Binding="{Binding Izdatelstvo}"/>
+                <DataGridTextColumn
+            Header="Книга"
+            Binding="{Binding NameBook}"/>
+                <DataGridTextColumn
+            Header="Год"
+            Binding="{Binding Year}"/>
+                <DataGridTextColumn
+                    Header="Страницы"
+                    Binding="{Binding Stranitsi}"/>
+                <DataGridTextColumn
+                    Header="Жанр"
+                    Binding="{Binding Janr}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
 ```
-![](./кнопка1.JPG)
-```XML
-<Window x:Class="wpf_timba.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:wpf_timba"
-
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            
-            </Grid.RowDefinitions>
-           <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            
-             </Grid.ColumnDefinitions>
-        <Button
-            Grid.Column="0"
-            Grid.Row="0"
-            Content="Строка 0 Столбец 0" />
-        <Button
-           Grid.Column="0"
-           Grid.Row="1"
-           Content="Объединение трёх столбцов"
-           Grid.ColumnSpan ="3" />
-        <Button
-            Grid.Column="2"
-            Grid.Row="2"
-            Content="Строка 2 столбец 2" />
-            
-            </Grid>
-</Window>
-```
-
-![](./фотка1.JPG)
-
-
-```XML
-<Window x:Class="wpf_timba.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:wpf_timba"
-
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Button
-            Grid.Column="0"
-            Content="Левая кнопка"></Button>
-        <GridSplitter
-            Grid.Column="1"
-            ShowsPreview="False"
-            Width="3"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Stretch" />
-        <Button
-            Grid.Column="2"
-            Content="Правая кнопка" />
-    </Grid>
-</Window>
-```
-![](./Фотка2.JPG)
-
-```XML
-<Window x:Class="wpf_timba.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:wpf_timba"
-
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <StackPanel VerticalAlignment="Bottom" Grid.RowSpan ="3">
-            <Button Background="LightYellow" Content="button1"/>
-        </StackPanel>
-        <WrapPanel Grid.Column="1" ItemWidth="600"></WrapPanel>
-        <Button Background="Blue" Content="1" />
-        <Button Background="White" Content="2" />
-        <Button Background="Red" Content="3" />
-
-    </Grid>
-</Window>
-
-```
-![](./Фотка3.JPG)
+# Результат работы:
+![](./resultat.JPG)
